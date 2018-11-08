@@ -35,9 +35,15 @@
         function cursor(width, color) {
             this.width = width;
             this.color = color;
-            this.update = function(event) {
-                this.x = event.clientX;
-                this.y = event.clientY;
+            this.update = function(event, plat) {
+                if(plat == "desktop"){
+                    this.x = event.clientX;
+                    this.y = event.clientY;
+                }
+                else {
+                    this.x = event.touches[0].clientX;
+                    this.y = event.touches[0].clientY;
+                }
                 ctx = canvasArea.context;
                 ctx.fillStyle = this.color;
                 ctx.beginPath();
@@ -71,13 +77,13 @@
         }
 
         window.addEventListener("touchmove", function(event) {
-            updateDrawArea(event);
+            updateDrawArea(event, "mobile");
         });
 
 
-        function updateDrawArea(event) {
+        function updateDrawArea(event, plat="desktop") {
             canvasArea.frameNo += 1;
-            myDrawCursor.update(event);
+            myDrawCursor.update(event, plat);
         }
         
         function everyinterval(n) {
