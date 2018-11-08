@@ -9,7 +9,7 @@
         }
     </style>
 </head>
-<body onload="startDraw()" onmousemove="updateDrawArea(event)">
+<body onload="startDraw()" ontouchmove="updateDrawArea(event)" onmousemove="updateDrawArea(event)">
 
     <script>
         var myDrawCursor;
@@ -26,7 +26,6 @@
                 this.context = this.canvas.getContext("2d");
                 document.body.insertBefore(this.canvas, document.body.childNodes[0]);
                 this.frameNo = 0;
-                //this.interval = setInterval(updateDrawArea, 20);
             },
             clear : function() {
                 this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -47,7 +46,6 @@
             }
             window.addEventListener('keydown', function(event) {
                 const key = event.key;
-                console.log(key)
                 if(key == "b"){
                     myDrawCursor.color = "blue";
                 }
@@ -71,6 +69,11 @@
                 }
             });
         }
+
+        window.addEventListener("touchmove", function(event) {
+            updateDrawArea(event);
+        });
+
 
         function updateDrawArea(event) {
             canvasArea.frameNo += 1;
