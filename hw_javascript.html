@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+    <title>Javascript HW</title>
+    <style>
+        canvas {
+            border: 2px solid grey;
+        }
+    </style>
+</head>
+<body onload="startDraw()" onmousemove="updateDrawArea(event)">
+
+    <script>
+        var myDrawCursor;
+        function startDraw() {
+            myDrawCursor = new cursor(20, "blue");
+            canvasArea.start();
+        }
+
+        var canvasArea = {
+            canvas : document.createElement("canvas"),
+            start : function() {
+                this.canvas.width = 800;
+                this.canvas.height = 500;
+                this.context = this.canvas.getContext("2d");
+                document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+                this.frameNo = 0;
+                //this.interval = setInterval(updateDrawArea, 20);
+            },
+            clear : function() {
+                this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            }
+        } 
+
+        function cursor(width, color) {
+            this.width = width;
+            this.color = color;
+            this.update = function(event) {
+                this.x = event.clientX;
+                this.y = event.clientY;
+                ctx = canvasArea.context;
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x,this.y,this.width,0,Math.PI*2,true);
+                ctx.fill();
+            }
+            window.addEventListener('keydown', function(event) {
+                const key = event.key;
+                console.log(key)
+                if(key == "b"){
+                    myDrawCursor.color = "blue";
+                }
+                else if (key == "g"){
+                    myDrawCursor.color = "green";
+                }
+                else if (key == "r"){
+                    myDrawCursor.color = "red";
+                }
+                else if (key == "y") {
+                    myDrawCursor.color = "yellow";
+                }
+                else if (key == "ArrowUp") {
+                    myDrawCursor.width += 10;
+                }
+                else if (key == "ArrowDown") {
+                    myDrawCursor.width -= 10;
+                }
+                else if (key == " ") {
+                    canvasArea.clear();
+                }
+            });
+        }
+
+        function updateDrawArea(event) {
+            canvasArea.frameNo += 1;
+            myDrawCursor.update(event);
+        }
+        
+        function everyinterval(n) {
+            if ((canvasArea.frameNo / n) % 1 == 0) {return true;}
+            return false;
+        }
+
+        
+    </script>
+
+</body>
+</html>
